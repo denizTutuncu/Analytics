@@ -54,4 +54,4 @@ With this data model , we will have something like this;
 
 Date format: mm/dd/yy
 
-## Also with this data model, we can easily check if the date already exist or not, if it is we can go and find it to update its count.
+Also with this data model, we can easily check if the date already exist or not, if it is we can go and find it to update its count.
