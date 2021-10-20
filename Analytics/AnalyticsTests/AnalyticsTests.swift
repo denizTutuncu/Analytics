@@ -26,8 +26,36 @@ class Analytics {
     private var eventsDataModel = Events()
     
     func track(eventType: EventType, creationDate: Date = Date()) {
-        let creationDateAsString = creationDate.convertToString()
-        eventsDataModel.updateValue([eventType:1], forKey: creationDateAsString)
+        updateEventsWith(eventType: eventType, creationDate: creationDate)
+    }
+    
+    private func updateEventsWith(eventType: EventType, creationDate: Date) {
+        let dateAsString = creationDate.convertToString()
+        
+        updateEvents(eventType: eventType, dateAsString: dateAsString)
+    }
+    
+    private func updateEvents(eventType: EventType, dateAsString: String) {
+        if !eventsDataModel.keys.contains(dateAsString) {
+            addNewDateWith(eventType, dateAsString: dateAsString)
+        } else {
+            updateEventTypeCount(eventType, dateAsString)
+        }
+    }
+    
+    private func addNewDateWith(_ eventType: EventType, dateAsString: String) {
+        eventsDataModel.updateValue([eventType:1], forKey: dateAsString)
+    }
+    
+    private func updateEventTypeCount(_ eventType: EventType, _ creationDateAsString: String) {
+        let eventCount = eventsDataModel[creationDateAsString]?[eventType]
+        
+        switch eventCount {
+        case let .some(count):
+            eventsDataModel[creationDateAsString]?[eventType] = count + 1
+        case .none:
+            eventsDataModel[creationDateAsString]?[eventType] = 1
+        }
     }
 }
 
@@ -64,7 +92,7 @@ class AnalyticsTests: XCTestCase {
     
     func test_track_addsCorrectEventTypee_toSUTEvents() {
         let sut = makeSUT()
-    
+        
         let (sept_3_2021, sept_3_2021_AsString) = fixedDateAndStringRepresentation()
         sut.track(eventType: .UserSignedIn, creationDate: sept_3_2021)
         
@@ -84,6 +112,20 @@ class AnalyticsTests: XCTestCase {
         sut.track(eventType: .TaskCreated, creationDate: taskCreatedDate)
         
         XCTAssertEqual(sut.events.count, 1)
+    }
+    
+    func test_trackTwice_onSameDay_withDifferentEventTypes_SUTContains_TwoEventTypes_onTheSameDay() {
+        let sut = makeSUT()
+        
+        let (sept_3_2021, sept_3_2021_AsString) = fixedDateAndStringRepresentation()
+        let taskCreatedDate = sept_3_2021.addOneHour()
+        
+        sut.track(eventType: .UserSignedIn, creationDate: sept_3_2021)
+        sut.track(eventType: .TaskCreated, creationDate: taskCreatedDate)
+        
+        let eventsOnDate = sut.events[sept_3_2021_AsString]
+        
+        XCTAssertEqual(eventsOnDate!.count, 2)
     }
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> Analytics {
