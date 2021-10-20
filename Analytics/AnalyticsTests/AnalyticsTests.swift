@@ -74,6 +74,18 @@ class AnalyticsTests: XCTestCase {
         XCTAssertEqual(key, .UserSignedIn)
     }
     
+    func test_trackTwice_OnSameDay_withDifferentEventTypes_SUTEventsContains_OneKeyForCreationDate() {
+        let sut = makeSUT()
+        
+        let (sept_3_2021, _) = fixedDateAndStringRepresentation()
+        let taskCreatedDate = sept_3_2021.addOneHour()
+        
+        sut.track(eventType: .UserSignedIn, creationDate: sept_3_2021)
+        sut.track(eventType: .TaskCreated, creationDate: taskCreatedDate)
+        
+        XCTAssertEqual(sut.events.count, 1)
+    }
+    
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> Analytics {
         let sut = Analytics()
         trackForMemoryLeaks(sut, file: file, line: line)

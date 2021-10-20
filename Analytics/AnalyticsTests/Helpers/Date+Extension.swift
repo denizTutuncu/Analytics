@@ -17,3 +17,14 @@ public extension Date {
         return "\(year)-\(month)-\(day)"
     }
 }
+
+internal extension Date {
+    
+    func adding(days: Int) -> Date {
+        return Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
+    }
+    
+    func addOneHour() -> Date {
+        return Calendar.current.date(byAdding: .hour, value: 1, to: self)!
+    }
+}
