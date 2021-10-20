@@ -25,36 +25,36 @@ class Analytics {
     
     private var eventsDataModel = Events()
     
-    func track(eventType: EventType, creationDate: Date = Date()) {
-        updateEventsWith(eventType: eventType, creationDate: creationDate)
+    func track(eventType: EventType, trackingDate: Date = Date()) {
+        updateEventsWith(eventType: eventType, trackingDate: trackingDate)
     }
     
-    private func updateEventsWith(eventType: EventType, creationDate: Date) {
-        let dateAsString = creationDate.convertToString()
+    private func updateEventsWith(eventType: EventType, trackingDate: Date) {
+        let trackingDateAsString = trackingDate.convertToString()
         
-        updateEvents(eventType: eventType, dateAsString: dateAsString)
+        updateEvents(eventType: eventType, trackingDateAsString: trackingDateAsString)
     }
     
-    private func updateEvents(eventType: EventType, dateAsString: String) {
-        if !eventsDataModel.keys.contains(dateAsString) {
-            addNewDateWith(eventType, dateAsString: dateAsString)
+    private func updateEvents(eventType: EventType, trackingDateAsString: String) {
+        if !eventsDataModel.keys.contains(trackingDateAsString) {
+            addNewDateWith(eventType, trackingDateAsString: trackingDateAsString)
         } else {
-            updateEventTypeCount(eventType, dateAsString)
+            updateEventTypeCount(eventType, trackingDateAsString)
         }
     }
     
-    private func addNewDateWith(_ eventType: EventType, dateAsString: String) {
-        eventsDataModel.updateValue([eventType:1], forKey: dateAsString)
+    private func addNewDateWith(_ eventType: EventType, trackingDateAsString: String) {
+        eventsDataModel.updateValue([eventType:1], forKey: trackingDateAsString)
     }
     
-    private func updateEventTypeCount(_ eventType: EventType, _ creationDateAsString: String) {
-        let eventCount = eventsDataModel[creationDateAsString]?[eventType]
+    private func updateEventTypeCount(_ eventType: EventType, _ trackingDateAsString: String) {
+        let eventCount = eventsDataModel[trackingDateAsString]?[eventType]
         
         switch eventCount {
         case let .some(count):
-            eventsDataModel[creationDateAsString]?[eventType] = count + 1
+            eventsDataModel[trackingDateAsString]?[eventType] = count + 1
         case .none:
-            eventsDataModel[creationDateAsString]?[eventType] = 1
+            eventsDataModel[trackingDateAsString]?[eventType] = 1
         }
     }
 }
@@ -85,7 +85,7 @@ class AnalyticsTrackTests: XCTestCase {
         let sut = makeSUT()
         
         let (sept_3_2021, sept_3_2021_AsString) = fixedDateAndStringRepresentation()
-        sut.track(eventType: .UserSignedIn, creationDate: sept_3_2021)
+        sut.track(eventType: .UserSignedIn, trackingDate: sept_3_2021)
         
         XCTAssertEqual(sut.events.keys.contains(sept_3_2021_AsString), true)
     }
@@ -94,7 +94,7 @@ class AnalyticsTrackTests: XCTestCase {
         let sut = makeSUT()
         
         let (sept_3_2021, sept_3_2021_AsString) = fixedDateAndStringRepresentation()
-        sut.track(eventType: .UserSignedIn, creationDate: sept_3_2021)
+        sut.track(eventType: .UserSignedIn, trackingDate: sept_3_2021)
         
         let eventType = sut.events[sept_3_2021_AsString]
         let key = eventType?.keys.first
@@ -108,8 +108,8 @@ class AnalyticsTrackTests: XCTestCase {
         let (sept_3_2021, _) = fixedDateAndStringRepresentation()
         let taskCreatedDate = sept_3_2021.addOneHour()
         
-        sut.track(eventType: .UserSignedIn, creationDate: sept_3_2021)
-        sut.track(eventType: .TaskCreated, creationDate: taskCreatedDate)
+        sut.track(eventType: .UserSignedIn, trackingDate: sept_3_2021)
+        sut.track(eventType: .TaskCreated, trackingDate: taskCreatedDate)
         
         XCTAssertEqual(sut.events.count, 1)
     }
@@ -120,8 +120,8 @@ class AnalyticsTrackTests: XCTestCase {
         let (sept_3_2021, sept_3_2021_AsString) = fixedDateAndStringRepresentation()
         let taskCreatedDate = sept_3_2021.addOneHour()
         
-        sut.track(eventType: .UserSignedIn, creationDate: sept_3_2021)
-        sut.track(eventType: .TaskCreated, creationDate: taskCreatedDate)
+        sut.track(eventType: .UserSignedIn, trackingDate: sept_3_2021)
+        sut.track(eventType: .TaskCreated, trackingDate: taskCreatedDate)
         
         let eventsOnDate = sut.events[sept_3_2021_AsString]
         
@@ -134,8 +134,8 @@ class AnalyticsTrackTests: XCTestCase {
         let (sept_3_2021, _) = fixedDateAndStringRepresentation()
         let taskCreatedDate = sept_3_2021.adding(days: 1)
         
-        sut.track(eventType: .UserSignedIn, creationDate: sept_3_2021)
-        sut.track(eventType: .TaskCreated, creationDate: taskCreatedDate)
+        sut.track(eventType: .UserSignedIn, trackingDate: sept_3_2021)
+        sut.track(eventType: .TaskCreated, trackingDate: taskCreatedDate)
         
         XCTAssertEqual(sut.events.count, 2)
     }
@@ -146,8 +146,8 @@ class AnalyticsTrackTests: XCTestCase {
         let (sept_3_2021, _) = fixedDateAndStringRepresentation()
         let secondUserSignedInDate = sept_3_2021.addOneHour()
         
-        sut.track(eventType: .UserSignedIn, creationDate: sept_3_2021)
-        sut.track(eventType: .UserSignedIn, creationDate: secondUserSignedInDate)
+        sut.track(eventType: .UserSignedIn, trackingDate: sept_3_2021)
+        sut.track(eventType: .UserSignedIn, trackingDate: secondUserSignedInDate)
         
         XCTAssertEqual(sut.events.count, 1)
     }
@@ -158,8 +158,8 @@ class AnalyticsTrackTests: XCTestCase {
         let (sept_3_2021, sept_3_2021_AsString) = fixedDateAndStringRepresentation()
         let secondUserSignedInDate = sept_3_2021.addOneHour()
         
-        sut.track(eventType: .UserSignedIn, creationDate: sept_3_2021)
-        sut.track(eventType: .UserSignedIn, creationDate: secondUserSignedInDate)
+        sut.track(eventType: .UserSignedIn, trackingDate: sept_3_2021)
+        sut.track(eventType: .UserSignedIn, trackingDate: secondUserSignedInDate)
         
         let userSignedInEvents = sut.events[sept_3_2021_AsString]
         let countForUserSignedInEvents = userSignedInEvents?[.UserSignedIn]
