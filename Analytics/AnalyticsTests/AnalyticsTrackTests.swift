@@ -59,7 +59,7 @@ class Analytics {
     }
 }
 
-class AnalyticsTests: XCTestCase {
+class AnalyticsTrackTests: XCTestCase {
     
     func test_init_SUTNotNil() {
         let sut = makeSUT()
@@ -150,6 +150,21 @@ class AnalyticsTests: XCTestCase {
         sut.track(eventType: .UserSignedIn, creationDate: secondUserSignedInDate)
         
         XCTAssertEqual(sut.events.count, 1)
+    }
+    
+    func test_trackTwice_onSameDay_withSameEvents_SUTEventsContains_oneEventTypeWithUpdatedCount() {
+        let sut = makeSUT()
+        
+        let (sept_3_2021, sept_3_2021_AsString) = fixedDateAndStringRepresentation()
+        let secondUserSignedInDate = sept_3_2021.addOneHour()
+        
+        sut.track(eventType: .UserSignedIn, creationDate: sept_3_2021)
+        sut.track(eventType: .UserSignedIn, creationDate: secondUserSignedInDate)
+        
+        let userSignedInEvents = sut.events[sept_3_2021_AsString]
+        let countForUserSignedInEvents = userSignedInEvents?[.UserSignedIn]
+        
+        XCTAssertEqual(countForUserSignedInEvents, 2)
     }
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> Analytics {
