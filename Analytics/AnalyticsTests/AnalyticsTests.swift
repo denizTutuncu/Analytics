@@ -62,6 +62,18 @@ class AnalyticsTests: XCTestCase {
         XCTAssertEqual(sut.events.keys.contains(sept_3_2021_AsString), true)
     }
     
+    func test_track_addsCorrectEventTypee_toSUTEvents() {
+        let sut = makeSUT()
+    
+        let (sept_3_2021, sept_3_2021_AsString) = fixedDateAndStringRepresentation()
+        sut.track(eventType: .UserSignedIn, creationDate: sept_3_2021)
+        
+        let eventType = sut.events[sept_3_2021_AsString]
+        let key = eventType?.keys.first
+        
+        XCTAssertEqual(key, .UserSignedIn)
+    }
+    
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> Analytics {
         let sut = Analytics()
         trackForMemoryLeaks(sut, file: file, line: line)
