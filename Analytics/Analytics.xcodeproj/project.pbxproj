@@ -11,6 +11,7 @@
 		2E6CB921271FE59F00CB68D5 /* AnalyticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6CB920271FE59F00CB68D5 /* AnalyticsTests.swift */; };
 		2E6CB92E271FED7400CB68D5 /* MemoryLeak+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6CB92D271FED7400CB68D5 /* MemoryLeak+Extension.swift */; };
 		2E6CB930271FF5F700CB68D5 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6CB92F271FF5F700CB68D5 /* Date+Extension.swift */; };
+		2E6CB932271FFAE800CB68D5 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6CB931271FFAE800CB68D5 /* DateHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +32,7 @@
 		2E6CB922271FE59F00CB68D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2E6CB92D271FED7400CB68D5 /* MemoryLeak+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemoryLeak+Extension.swift"; sourceTree = "<group>"; };
 		2E6CB92F271FF5F700CB68D5 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		2E6CB931271FFAE800CB68D5 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 			children = (
 				2E6CB92D271FED7400CB68D5 /* MemoryLeak+Extension.swift */,
 				2E6CB92F271FF5F700CB68D5 /* Date+Extension.swift */,
+				2E6CB931271FFAE800CB68D5 /* DateHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E6CB921271FE59F00CB68D5 /* AnalyticsTests.swift in Sources */,
+				2E6CB932271FFAE800CB68D5 /* DateHelper.swift in Sources */,
 				2E6CB92E271FED7400CB68D5 /* MemoryLeak+Extension.swift in Sources */,
 				2E6CB930271FF5F700CB68D5 /* Date+Extension.swift in Sources */,
 			);
