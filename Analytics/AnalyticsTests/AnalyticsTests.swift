@@ -24,6 +24,11 @@ class Analytics {
     }
     
     private var eventsDataModel = Events()
+    
+    func track() {
+        let todayAsString = Date().convertToString()
+        eventsDataModel.updateValue([EventType.UserSignedIn:1], forKey: todayAsString)
+    }
 }
 
 class AnalyticsTests: XCTestCase {
@@ -38,6 +43,14 @@ class AnalyticsTests: XCTestCase {
         let sut = makeSUT()
         
         XCTAssertEqual(sut.events.count, 0)
+    }
+    
+    func test_track_addsNewEventType() {
+        let sut = makeSUT()
+        
+        sut.track()
+        
+        XCTAssertEqual(sut.events.count, 1)
     }
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> Analytics {
