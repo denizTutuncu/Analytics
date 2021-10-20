@@ -7,4 +7,13 @@
 
 import XCTest
 
-class AnalyticsTests: XCTestCase {}
+class Analytics {}
+
+class AnalyticsTests: XCTestCase {
+    
+    func test_init_SUTNotNil() {
+        let sut = Analytics()
+        
+        XCTAssertNotNil(sut)
+    }
+}
