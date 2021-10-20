@@ -7,7 +7,24 @@
 
 import XCTest
 
-class Analytics {}
+enum EventType: Hashable {
+    case UserSignedIn
+    case TaskCreated
+    case TaskCompleted
+}
+
+typealias Events = [String: [EventType : Int]]
+
+class Analytics {
+    
+    init() {}
+    
+    var events: Events {
+        return eventsDataModel
+    }
+    
+    private var eventsDataModel = Events()
+}
 
 class AnalyticsTests: XCTestCase {
     
@@ -15,6 +32,12 @@ class AnalyticsTests: XCTestCase {
         let sut = makeSUT()
         
         XCTAssertNotNil(sut)
+    }
+    
+    func test_init_eventsIsEmpty() {
+        let sut = makeSUT()
+        
+        XCTAssertEqual(sut.events.count, 0)
     }
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> Analytics {
