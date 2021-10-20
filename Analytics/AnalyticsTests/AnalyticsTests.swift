@@ -12,10 +12,14 @@ class Analytics {}
 class AnalyticsTests: XCTestCase {
     
     func test_init_SUTNotNil() {
-        let sut = Analytics()
+        let sut = makeSUT()
         
         XCTAssertNotNil(sut)
     }
     
-    
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> Analytics {
+        let sut = Analytics()
+        trackForMemoryLeaks(sut, file: file, line: line)
+        return sut
+    }
 }
